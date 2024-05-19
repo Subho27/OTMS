@@ -1,2 +1,2 @@
 [localhost]
-subho ansible_connection=local ansible_become_pass=ubuntu12
+subho ansible_connection=local
