@@ -20,11 +20,9 @@
 
     - name: Pull frontend from Docker Hub
       shell: docker pull subhodip703/otms-all-frontend:latest
-      register: frontend_pull
 
     - name: Pull backend from Docker Hub
       shell: docker pull subhodip703/otms-all-backend:latest
-      register: backend_pull
 
     - name: Create /opt/otms directory if it doesn't exist
       file:
@@ -44,10 +42,8 @@
       shell: docker compose up -d
       args:
         chdir: /opt/otms
-      register: compose_up
 
     - name: Ensure services are up
       shell: docker compose ps
       args:
         chdir: /opt/otms
-      register: compose_ps
