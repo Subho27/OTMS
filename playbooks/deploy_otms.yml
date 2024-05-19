@@ -1,8 +1,45 @@
 ---
-- hosts: localhost
+- name: Deploy OTMS application
+  hosts: localhost
   tasks:
-    - name: Pull Docker image from Docker Hub
-      shell: docker pull subhodip703/otms-backend:latest
-    
-    - name: Run Docker container
-      shell: docker run -d -p 8081:8080 subhodip703/otms-backend:latest
+    - name: Ensure Docker is installed
+      apt:
+        name: docker.io
+        state: present
+      become: true
+
+    - name: Ensure Docker Compose is installed
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+      become: true
+      when: ansible_distribution == "Ubuntu"
+
+    - name: Pull frontend image from Docker Hub
+      command: docker pull subhodip703/otms-all-frontend
+      register: frontend_pull
+
+    - name: Pull backend image from Docker Hub
+      command: docker pull subhodip703/otms-all-backend
+      register: backend_pull
+
+    - name: Copy Docker compose file to host
+      copy:
+        src: /var/lib/jenkins/workspace/OTMS-ansible-all/docker-compose-deploy.yml
+        dest: /opt/otms/docker-compose.yml
+
+    - name: Start services with Docker Compose
+      command: docker-compose up -d
+      args:
+        chdir: /opt/otms
+      register: compose_up
+
+    - name: Ensure services are up
+      command: docker-compose ps
+      args:
+        chdir: /opt/otms
+      register: compose_ps
+
+  vars:
+    docker_username: "{{ lookup('env', 'DOCKER_USERNAME') }}"
