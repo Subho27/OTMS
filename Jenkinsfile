@@ -36,7 +36,7 @@ pipeline {
         stage('Containerize Whole Application') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'docker compose -f docker-compose.yml build'
                     sh 'docker tag otms-frontend:latest $DOCKER_USERNAME/otms-all-frontend'
                     sh 'docker tag otms-backend:latest $DOCKER_USERNAME/otms-all-backend'
                 }
