@@ -36,12 +36,12 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - otms: /var/lib/mysql
+      - otms:/var/lib/mysql
     networks:
       - otmsnetwork
 
 volumes:
-  otms: 
+  otms:
 
 networks:
   otmsnetwork:
