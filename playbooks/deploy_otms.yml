@@ -25,10 +25,19 @@
       command: docker pull subhodip703/otms-all-backend
       register: backend_pull
 
+    - name: Create /opt/otms directory if it doesn't exist
+      file:
+        path: /opt/otms
+        state: directory
+        mode: '0755'
+
     - name: Copy Docker compose file to host
       copy:
         src: /var/lib/jenkins/workspace/OTMS-ansible-all/docker-compose-deploy.yml
         dest: /opt/otms/docker-compose.yml
+        owner: root
+        group: root
+        mode: '0644'
 
     - name: Start services with Docker Compose
       command: docker compose up -d
