@@ -18,12 +18,12 @@
     #   become: true
     #   when: ansible_distribution == "Ubuntu"
 
-    - name: Pull frontend image from Docker Hub
-      command: docker pull subhodip703/otms-all-frontend
+    - name: Pull frontend from Docker Hub
+      shell: docker pull subhodip703/otms-frontend:latest
       register: frontend_pull
 
-    - name: Pull backend image from Docker Hub
-      command: docker pull subhodip703/otms-all-backend
+    - name: Pull backend from Docker Hub
+      shell: docker pull subhodip703/otms-all-backend:latest
       register: backend_pull
 
     - name: Create /opt/otms directory if it doesn't exist
@@ -41,13 +41,13 @@
         mode: '0644'
 
     - name: Start services with Docker Compose
-      command: docker compose up -d
+      shell: docker compose up -d
       args:
         chdir: /opt/otms
       register: compose_up
 
     - name: Ensure services are up
-      command: docker compose ps
+      shell: docker compose ps
       args:
         chdir: /opt/otms
       register: compose_ps
