@@ -4,26 +4,41 @@ pipeline {
     stages {
         stage('Checkout Branch') {
             steps {
-                git branch: 'master', url: 'https://github.com/Subho27/OTMS-Backend.git'
+                git branch: 'master', url: 'https://github.com/Subho27/OTMS.git'
             }
         }
-       
-        stage('Build Project') {
+
+        stage('Build Frontend') {
             steps {
-                sh 'mvn clean compile'
+                dir('frontend') {
+                    sh 'npm install'
+                    sh 'CI=false npm run build'
+                }
             }
         }
-       
-        stage('Unit Testing') {
+        
+        stage('Build Backend') {
             steps {
-                sh 'mvn clean test'
+                dir('backend') {
+                    sh 'mvn clean compile'
+                }
             }
         }
        
-        stage('Containerize Application') {
+        // stage('Unit Testing') {
+        //     steps {
+        //         dir('backend') {
+        //             sh 'mvn clean test'
+        //         }
+        //     }
+        // }
+       
+        stage('Containerize Whole Application') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker build -t $DOCKER_USERNAME/otms-backend .'
+                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'docker tag otms-frontend:latest $DOCKER_USERNAME/otms-all-frontend'
+                    sh 'docker tag otms-backend:latest $DOCKER_USERNAME/otms-all-backend'
                 }
             }
         }
@@ -32,14 +47,15 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-                    sh 'docker push $DOCKER_USERNAME/otms-backend'
+                    sh 'docker push $DOCKER_USERNAME/otms-all-frontend'
+                    sh 'docker push $DOCKER_USERNAME/otms-all-backend'
                 }
             }
         }
        
         stage('Deployment') {
             steps {
-                sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_docker.yml'
+                sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_otms.yml'
             }
         }
      }
