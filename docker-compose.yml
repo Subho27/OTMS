@@ -30,8 +30,6 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_DATABASE: exam-portal
-      MYSQL_USER: root
-      MYSQL_PASSWORD: subho123
       MYSQL_ROOT_PASSWORD: subho123
     ports:
       - "3307:3306"
