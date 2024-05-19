@@ -30,13 +30,13 @@
         dest: /opt/otms/docker-compose.yml
 
     - name: Start services with Docker Compose
-      command: docker-compose up -d
+      command: docker compose up -d
       args:
         chdir: /opt/otms
       register: compose_up
 
     - name: Ensure services are up
-      command: docker-compose ps
+      command: docker compose ps
       args:
         chdir: /opt/otms
       register: compose_ps
