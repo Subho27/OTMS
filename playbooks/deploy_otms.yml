@@ -40,6 +40,3 @@
       args:
         chdir: /opt/otms
       register: compose_ps
-
-  vars:
-    docker_username: "{{ lookup('env', 'DOCKER_USERNAME') }}"
