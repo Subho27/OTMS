@@ -37,8 +37,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh 'docker compose -f docker-compose.yml build'
-                    sh 'docker tag otms-frontend:latest $DOCKER_USERNAME/otms-all-frontend'
-                    sh 'docker tag otms-backend:latest $DOCKER_USERNAME/otms-all-backend'
+                    sh 'docker tag otms-ansible-all-frontend:latest $DOCKER_USERNAME/otms-all-frontend'
+                    sh 'docker tag otms-ansible-all-backend:latest $DOCKER_USERNAME/otms-all-backend'
                 }
             }
         }
