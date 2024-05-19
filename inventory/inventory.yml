@@ -1,2 +1,2 @@
 [localhost]
-subho ansible_connection=local
+subho ansible_connection=local ansible_password=ubuntu12
