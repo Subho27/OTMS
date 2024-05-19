@@ -34,7 +34,7 @@ services:
       MYSQL_PASSWORD: subho123
       MYSQL_ROOT_PASSWORD: subho123
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - otms:/var/lib/mysql
     networks:
