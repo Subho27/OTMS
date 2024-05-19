@@ -1,7 +1,8 @@
 ---
 - name: Deploy OTMS application
   hosts: localhost
-  gather_facts: no
+  gather_facts: false
+  become: yes
   tasks:
     # - name: Ensure Docker is installed
     #   apt:
@@ -27,17 +28,11 @@
       file:
         path: /opt/otms
         state: directory
-        mode: '0755'
-      become: true
 
     - name: Copy Docker compose file to host
       copy:
         src: /var/lib/jenkins/workspace/OTMS-ansible-all/docker-compose-deploy.yml
         dest: /opt/otms/docker-compose.yml
-        owner: root
-        group: root
-        mode: '0644'
-      become: true
 
     - name: Start services with Docker Compose
       shell: docker compose up -d
