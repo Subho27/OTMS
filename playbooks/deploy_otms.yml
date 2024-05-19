@@ -19,7 +19,7 @@
     #   when: ansible_distribution == "Ubuntu"
 
     - name: Pull frontend from Docker Hub
-      shell: docker pull subhodip703/otms-frontend:latest
+      shell: docker pull subhodip703/otms-all-frontend:latest
       register: frontend_pull
 
     - name: Pull backend from Docker Hub
