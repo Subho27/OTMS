@@ -28,6 +28,7 @@
         path: /opt/otms
         state: directory
         mode: '0755'
+      become: true
 
     - name: Copy Docker compose file to host
       copy:
@@ -36,6 +37,7 @@
         owner: root
         group: root
         mode: '0644'
+      become: true
 
     - name: Start services with Docker Compose
       shell: docker compose up -d
