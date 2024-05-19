@@ -1,0 +1,49 @@
+.userProfilePage__container {
+    display: flex;
+}
+
+.userProfilePage__sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.userProfilePage__content {
+    text-align: center;
+    width: 80%;
+    height: fit-content;
+    margin-top: 5%;
+}
+
+.userProfilePage__content--profilePic {
+    border: 2px solid rgb(68 177 49);
+}
+
+.userProfilePage__content--table {
+    border: none !important;
+    width: 98%;
+    margin: 20px auto;
+}
+
+.userProfilePage__content--table tr td {
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.userProfilePage__content--table td:first-child {
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #492E87;
+    width: 30%;
+    text-align: left;
+}
+
+.userProfilePage__content--table td:last-child {
+    font-family: "Poppins", sans-serif;
+    color: #492E87;
+    width: 70%;
+    text-align: left;
+    letter-spacing: 1px;
+}

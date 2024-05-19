@@ -1,0 +1,32 @@
+.adminQuestionsPage__container {
+    display: flex;
+}
+
+.adminQuestionsPage__sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.adminQuestionsPage__content {
+    margin: 10px;
+    width: 100%;
+    height: fit-content;
+    padding: 8px;
+}
+
+.adminQuestionsPage__content--button {
+    width: 20%;
+    margin: 20px auto;
+    background-color: #37B5B6;
+    color: #FFFFFF;
+    border: none;
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+}
+
+.adminQuestionsPage__content--button:hover {
+    border: 2px solid #37B5B6;
+    color: #37B5B6;
+    font-weight: bold;
+}

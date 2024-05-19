@@ -1,0 +1,74 @@
+.adminCategoriesPage__container {
+    display: flex;
+}
+
+.adminCategoriesPage__sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.adminCategoriesPage__content {
+    margin: 10px;
+    width: 100%;
+    height: fit-content;
+    padding: 8px;
+}
+
+.adminCategoriesPage__content--categoriesList {
+    width: 32%;
+    height: 150px;
+    margin-top: 30px;
+    border-bottom-style: inset;
+    border-right-style: inset;
+    border: 1px solid grey;
+    justify-content: center;
+}
+
+.adminCategoriesPage__content--button {
+    float: right;
+    display: block;
+    width: 20%;
+    margin: 20px auto;
+    background-color: #37B5B6;
+    color: #FFFFFF;
+    border: none;
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+}
+
+.adminCategoriesPage__content--button:hover {
+    border: 2px solid #37B5B6;
+    color: #37B5B6;
+    font-weight: bold;
+}
+
+.action-button:hover {
+    font-weight: bold !important;
+}
+
+/*.profile-heading {*/
+/*    padding-left: 20px;*/
+/*    padding-bottom: 10px;*/
+/*    font-family: "Poppins", sans-serif;*/
+
+/*}*/
+
+.custom-shadow {
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 5px 2px #b0afaf;
+}
+
+.whole-list {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 2%;
+    /*justify-content: space-evenly;*/
+}
+
+.subject-describe {
+    height: 70px;
+}

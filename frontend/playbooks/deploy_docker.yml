@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Pull Docker image from Docker Hub
+      shell: docker pull subhodip703/otms-frontend:latest
+    
+    - name: Run Docker container
+      shell: docker run -d -p 3000:80 subhodip703/otms-frontend:latest
