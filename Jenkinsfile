@@ -55,7 +55,7 @@ pipeline {
        
         stage('Deployment') {
             steps {
-                sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_otms.yml --extra-vars "ansible_sudo_pass=ubuntu12"'
+                sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_otms.yml'
             }
         }
      }
