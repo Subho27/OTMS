@@ -1,0 +1,44 @@
+version: "3.8"
+services:
+  frontend:
+    image: {{ docker_username }}/otms-all-frontend:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - otmsnetwork
+
+  backend:
+    image: {{ docker_username }}/otms-all-backend:latest
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/exam-portal
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: subho123
+    depends_on:
+      - db
+    networks:
+      - otmsnetwork
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: exam-portal
+      MYSQL_USER: root
+      MYSQL_PASSWORD: subho123
+      MYSQL_ROOT_PASSWORD: subho123
+    ports:
+      - "3306:3306"
+    volumes:
+      - otms:/var/lib/mysql
+    networks:
+      - otmsnetwork
+
+volumes:
+  otms:
+
+networks:
+  otmsnetwork:
+    driver: bridge
