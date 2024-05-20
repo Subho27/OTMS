@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: otms-frontend-deployment
+  namespace: otms-project
   labels:
     app: otms-frontend
 spec:
@@ -37,6 +38,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: otms-frontend-service
+  namespace: otms-project
 spec:
   selector:
     app.kubernetes.io/name: otms-frontend

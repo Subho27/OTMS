@@ -2,8 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: otms-db-config
+  namespace: otms-project
 data:
-  DATABASE_URL: "jdbc:mysql://otms-db-service:3306/exam-portal?autoReconnect=true&useSSL=false"
+  DATABASE_URL: "jdbc:mysql://otms-db-service:3306/exam-portal"
   MYSQL_ROOT_PASSWORD: "subho123"
   MYSQL_USER: "root"
   MYSQL_DATABASE: "exam-portal"
