@@ -39,7 +39,7 @@ metadata:
   name: otms-db-service
 spec:
   selector:
-    app.kubernetes.io/name: otms-db
+    app: otms-db
   ports:
     - protocol: TCP
       port: 3306
