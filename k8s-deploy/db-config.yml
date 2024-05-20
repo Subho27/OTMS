@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: otms-db-config
 data:
-  MYSQL_HOST: "otms-db-service"
-  MYSQL_PORT: "3306"
+  DATABASE_URL: "jdbc:mysql://otms-db-service:3306/exam-portal?autoReconnect=true&useSSL=false"
   MYSQL_ROOT_PASSWORD: "subho123"
   MYSQL_USER: "root"
   MYSQL_DATABASE: "exam-portal"

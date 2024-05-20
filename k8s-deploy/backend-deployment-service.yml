@@ -20,31 +20,21 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: MYSQL_HOST
+            - name: SPRING_DATASOURCE_URL
               valueFrom:
                 configMapKeyRef:
                   name: otms-db-config
-                  key: MYSQL_HOST
-            - name: MYSQL_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: otms-db-config
-                  key: MYSQL_PORT
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: otms-db-config
-                  key: MYSQL_ROOT_PASSWORD
-            - name: MYSQL_USER
+                  key: DATABASE_URL
+            - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: otms-db-config
                   key: MYSQL_USER
-            - name: MYSQL_DATABASE
+            - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 configMapKeyRef:
                   name: otms-db-config
-                  key: MYSQL_DATABASE
+                  key: MYSQL_ROOT_PASSWORD
 
 ---
 
