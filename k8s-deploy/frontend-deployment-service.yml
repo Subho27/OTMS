@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: otms-frontend
-          image: otms-all-frontend:0.0.1
+          image: subhodip703/otms-frontend:0.0.1
           ports:
             - containerPort: 80
           env:
