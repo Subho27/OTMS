@@ -2,7 +2,7 @@ import axios from "axios";
 
 const register = async (user) => {
   try {
-    const { data } = await axios.post("http://backend:8080/register", user);
+    const { data } = await axios.post("/api/register", user);
     if (data && data.userId) {
       console.log(
         "authService:register() Success: ",

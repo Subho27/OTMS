@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otms-frontend-deployment
+  labels:
+    app: otms-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: otms-frontend
+  template:
+    metadata:
+      labels:
+        app: otms-frontend
+    spec:
+      containers:
+        - name: otms-frontend
+          image: otms-all-frontend:0.0.1
+          ports:
+            - containerPort: 80
+          env:
+            - name: BACKEND_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: otms-backend-config
+                  key: BACKEND_HOST
+            - name: BACKEND_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: otms-backend-config
+                  key: BACKEND_PORT
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: otms-frontend-service
+spec:
+  selector:
+    app.kubernetes.io/name: otms-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
