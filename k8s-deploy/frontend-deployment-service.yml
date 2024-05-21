@@ -39,8 +39,9 @@ metadata:
   name: otms-frontend-service
 spec:
   selector:
-    app.kubernetes.io/name: otms-frontend
+    app: otms-frontend
   ports:
     - protocol: TCP
       port: 80
       targetPort: 3000
+  type: LoadBalancer
