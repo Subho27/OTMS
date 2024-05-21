@@ -7,3 +7,4 @@ data:
   MYSQL_ROOT_PASSWORD: "subho123"
   MYSQL_USER: "root"
   MYSQL_DATABASE: "exam-portal"
+  SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: "org.hibernate.dialect.MySQL8Dialect"
