@@ -35,6 +35,11 @@ spec:
                 configMapKeyRef:
                   name: otms-db-config
                   key: MYSQL_ROOT_PASSWORD
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+              valueFrom:
+                configMapKeyRef:
+                  name: otms-db-config
+                  key: HIBERNATE_DIALECT
 
 ---
 
