@@ -40,6 +40,11 @@ spec:
                 configMapKeyRef:
                   name: otms-db-config
                   key: HIBERNATE_DIALECT
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: otms-db-config
+                  key: DDL_AUTO
 
 ---
 

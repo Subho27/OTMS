@@ -8,3 +8,4 @@ data:
   MYSQL_USER: "root"
   MYSQL_DATABASE: "exam-portal"
   HIBERNATE_DIALECT: "org.hibernate.dialect.MySQL8Dialect"
+  DDL_AUTO: "update"
