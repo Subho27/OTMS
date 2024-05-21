@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy the Maven project files to the container
 COPY pom.xml .
+RUN rm -rf src
 COPY src ./src
 
 # Build the Maven project
