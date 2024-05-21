@@ -25,6 +25,8 @@ kubectl delete deployment otms-frontend-deployment
 kubectl delete configmap otms-backend-config
 kubectl delete configmap otms-db-config
 
+minikube service otms-frontend-service
+
 docker push subhodip703/otms-frontend:0.0.1
 
 docker push subhodip703/otms-backend:0.0.1
