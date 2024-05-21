@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: otms-db
-          image: mysql:latest
+          image: mysql:8.0.34
           ports:
             - containerPort: 3306
           env:
