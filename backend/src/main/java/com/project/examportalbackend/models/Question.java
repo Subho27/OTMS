@@ -38,7 +38,10 @@ public class Question {
     @Column(name = "answer")
     private String answer;
 
+    // @ManyToOne(fetch = FetchType.EAGER)
+    // private Quiz quiz;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "quiz_quiz_id", referencedColumnName = "quizId")
     private Quiz quiz;
 }
 
