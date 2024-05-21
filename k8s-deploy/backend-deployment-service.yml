@@ -54,7 +54,7 @@ metadata:
   name: otms-backend-service
 spec:
   selector:
-    app.kubernetes.io/name: otms-backend
+    app: otms-backend
   ports:
     - protocol: TCP
       port: 8080

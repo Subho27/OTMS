@@ -4,6 +4,9 @@ FROM node:18.18.2 as build
 # Set the working directory in the container
 WORKDIR /app
 
+# Remove any existing files in the working directory
+RUN rm -rf *
+
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
