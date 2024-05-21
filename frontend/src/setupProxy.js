@@ -7,7 +7,7 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: `otms-backend://${backendHost}:${backendPort}`,
+      target: `http://${backendHost}:${backendPort}`,
       changeOrigin: true,
     })
   );
