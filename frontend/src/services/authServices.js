@@ -1,8 +1,9 @@
 import axios from "axios";
+import env from "react-dotenv";
 
 const register = async (user) => {
   try {
-    const { data } = await axios.post("/api/register", user);
+    const { data } = await axios.post(`${env.BACKEND_URL}/register`, user);
     if (data && data.userId) {
       console.log(
         "authService:register() Success: ",
@@ -22,7 +23,7 @@ const register = async (user) => {
 
 const login = async (username, password) => {
   try {
-    const { data } = await axios.post("/api/login", {
+    const { data } = await axios.post(`${env.BACKEND_URL}/login`, {
       username: username,
       password: password,
     });
