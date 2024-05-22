@@ -30,6 +30,11 @@ spec:
                 configMapKeyRef:
                   name: otms-backend-config
                   key: BACKEND_PORT
+            - name: BACKEND_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: otms-backend-config
+                  key: BACKEND_URL
 
 ---
 
