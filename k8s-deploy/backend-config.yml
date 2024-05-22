@@ -5,3 +5,4 @@ metadata:
 data:
   BACKEND_HOST: "otms-backend-service"
   BACKEND_PORT: "8080"
+  BACKEND_URL: "http://otms-backend-service:8080"
