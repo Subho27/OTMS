@@ -1,20 +1,26 @@
-kubectl logs deployment/otms-db-deployment > otms-db-deployment.log
-kubectl logs deployment/otms-backend-deployment > otms-backend-deployment.log
-kubectl logs deployment/otms-frontend-deployment > otms-frontend-deployment.log
+git clone https://github.com/Subho27/OTMS.git
+
+docker build -t subhodip703/otms-backend:0.0.1 . --no-cache
+docker build -t subhodip703/otms-frontend:0.0.1 . --no-cache
+
+docker push subhodip703/otms-backend:0.0.1
+docker push subhodip703/otms-frontend:0.0.1
+
+kubectl get pods
+kubectl get deployments
 
 kubectl apply -f backend-config.yml
-
-kubectl apply -f backend-deployment-service.yml
-
-kubectl apply -f frontend-deployment-service.yml
-
 kubectl apply -f db-config.yml
 
 kubectl apply -f db-deployment-service.yml
+kubectl apply -f backend-deployment-service.yml
+kubectl apply -f frontend-deployment-service.yml
 
-kubectl get pods
+minikube service otms-frontend-service
 
-kubectl get deployments
+kubectl logs deployment/otms-db-deployment > otms-db-deployment.log
+kubectl logs deployment/otms-backend-deployment > otms-backend-deployment.log
+kubectl logs deployment/otms-frontend-deployment > otms-frontend-deployment.log
 
 kubectl delete deployment otms-db-deployment
 kubectl delete service otms-db-service
@@ -24,15 +30,3 @@ kubectl delete service otms-frontend-service
 kubectl delete deployment otms-frontend-deployment
 kubectl delete configmap otms-backend-config
 kubectl delete configmap otms-db-config
-
-minikube service otms-frontend-service
-
-docker push subhodip703/otms-frontend:0.0.1
-
-docker push subhodip703/otms-backend:0.0.1
-
-docker build -t subhodip703/otms-backend:0.0.1 . --no-cache
-
-docker build -t subhodip703/otms-frontend:0.0.1 . --no-cache
-
-git clone https://github.com/Subho27/OTMS.git
