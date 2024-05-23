@@ -63,10 +63,68 @@ pipeline {
             }
         }
        
-        // stage('Deployment') {
-        //     steps {
-        //         sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_otms.yml -vvv'
-        //     }
-        // }
-     }
+        stage('Deployment Configurations Setup') {
+            steps {
+                dir('k8s-deploy') {
+                    sh 'kubectl apply -f db-config.yml'
+                    sh 'kubectl apply -f backend-config.yml'
+                }
+            }
+        }
+
+        stage('Database Deployment') {
+            steps {
+                dir('k8s-deploy') {
+                    sh 'kubectl apply -f db-deployment-service.yml'
+                }
+            }
+        }
+
+        stage('Waiting for Database Service to be up & running') {
+            steps {
+                script {
+                    kubernetesResource(
+                        apiVersion: 'v1',
+                        kind: 'Service',
+                        name: 'otms-db-service',
+                        namespace: 'default',
+                        waitForCondition: 'Ready',
+                        timeout: 5
+                    )
+                }
+            }
+        }
+
+        stage('Backend Deployment') {
+            steps {
+                dir('k8s-deploy') {
+                    sh 'kubectl apply -f backend-deployment-service.yml'
+                }
+            }
+        }
+
+        stage('Waiting for Backend Service to be up & running') {
+            steps {
+                script {
+                    kubernetesResource(
+                        apiVersion: 'v1',
+                        kind: 'Service',
+                        name: 'otms-backend-service',
+                        namespace: 'default',
+                        waitForCondition: 'Ready',
+                        timeout: 5
+                    )
+                }
+            }
+        }
+
+        stage('Frontend Deployment') {
+            steps {
+                dir('k8s-deploy') {
+                    sh 'kubectl apply -f frontend-deployment-service.yml'
+                }
+            }
+        }
+
+    }
 }
