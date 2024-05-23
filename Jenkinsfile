@@ -65,7 +65,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_otm_kube.yml'
+                sh '/usr/bin/ansible-playbook -i inventory/inventory.yml playbooks/deploy_otms_kube.yml'
             }
         }
        
