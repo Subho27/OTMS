@@ -33,12 +33,22 @@ pipeline {
         //     }
         // }
        
-        stage('Containerize Whole Application') {
+        stage('Containerize Frontend Application') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'docker compose -f docker-compose.yml build'
-                    sh 'docker tag otms-ansible-all-frontend:latest $DOCKER_USERNAME/otms-all-frontend'
-                    sh 'docker tag otms-ansible-all-backend:latest $DOCKER_USERNAME/otms-all-backend'
+                dir('frontend') {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'docker build -t $DOCKER_USERNAME/ui-otms:0.0.1 . --no-cache'
+                    }
+                }
+            }
+        }
+
+        stage('Containerize Backend Application') {
+            steps {
+                dir('backend') {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'docker build -t $DOCKER_USERNAME/api-otms:0.0.1 . --no-cache'
+                    }
                 }
             }
         }
@@ -47,8 +57,8 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
-                    sh 'docker push $DOCKER_USERNAME/otms-all-frontend'
-                    sh 'docker push $DOCKER_USERNAME/otms-all-backend'
+                    sh 'docker push $DOCKER_USERNAME/ui-otms:0.0.1'
+                    sh 'docker push $DOCKER_USERNAME/api-otms:0.0.1'
                 }
             }
         }
