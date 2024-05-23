@@ -2,11 +2,11 @@ pipeline {
     agent any
    
     stages {
-        // stage('Checkout Branch') {
-        //     steps {
-        //         git branch: 'master', url: 'https://github.com/Subho27/OTMS.git'
-        //     }
-        // }
+        stage('Checkout Branch') {
+            steps {
+                git branch: 'master', url: 'https://github.com/Subho27/OTMS.git'
+            }
+        }
 
         // stage('Build Frontend') {
         //     steps {
