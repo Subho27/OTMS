@@ -23,26 +23,14 @@
     - name: Pull backend from Docker Hub
       shell: docker pull subhodip703/api-otms:0.0.1
 
-    - name: Create /opt/otms directory if it doesn't exist
-      file:
-        path: /opt/otms
-        state: directory
-      become: true
-
-    - name: Copy config files to host
-      copy:
-        src: /var/lib/jenkins/workspace/OTMS/k8s-deploy
-        dest: /opt/otms/
-
-    # Ensure kubectl is installed
-    # And also cluster is connected
-
-    - name: Add database config to cluster
-      shell: kubectl apply -f db-config.yml
-      args:
-        chdir: /opt/otms
-
-    - name: Deploying Database service
-      shell: kubectl apply -f db-deployment-service.yml
-      args:
-        chdir: /opt/otms
+    - name: Deploying Database ConfigMap File
+      kubernetes.core.k8s:
+        kubeconfig: ~/.kube/config
+        state: present
+        src: ./k8s-deploy/db-config.yml
+    
+    - name: Deploying Database
+      kubernetes.core.k8s:
+        kubeconfig: ~/.kube/config
+        state: present
+        src: ./k8s-deploy/db-deployment-service.yml
