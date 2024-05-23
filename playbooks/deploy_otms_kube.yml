@@ -23,6 +23,12 @@
     - name: Pull backend from Docker Hub
       shell: docker pull subhodip703/api-otms:0.0.1
 
+    - name: Install kubernetes library
+      pip:
+        name: kubernetes
+        state: present
+        executable: pip3
+
     - name: Deploying Database ConfigMap File
       kubernetes.core.k8s:
         state: present
