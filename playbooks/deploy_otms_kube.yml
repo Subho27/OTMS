@@ -28,9 +28,11 @@
         kubeconfig: /home/subho/.kube/config
         state: present
         src: ./k8s-deploy/db-config.yml
+        remote_src: true
     
     - name: Deploying Database
       kubernetes.core.k8s:
         kubeconfig: /home/subho/.kube/config
         state: present
         src: ./k8s-deploy/db-deployment-service.yml
+        remote_src: true
