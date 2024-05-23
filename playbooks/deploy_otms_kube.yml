@@ -18,10 +18,10 @@
     #   when: ansible_distribution == "Ubuntu"
 
     - name: Pull frontend from Docker Hub
-      shell: docker pull subhodip703/otms-all-frontend:latest
+      shell: docker pull subhodip703/ui-otms:0.0.1
 
     - name: Pull backend from Docker Hub
-      shell: docker pull subhodip703/otms-all-backend:latest
+      shell: docker pull subhodip703/api-otms:0.0.1
 
     - name: Create /opt/otms directory if it doesn't exist
       file:
