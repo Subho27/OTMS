@@ -27,6 +27,7 @@
       file:
         path: /opt/otms
         state: directory
+      become: true
 
     - name: Copy config files to host
       copy:
