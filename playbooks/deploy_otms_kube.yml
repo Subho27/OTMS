@@ -1,0 +1,48 @@
+---
+- name: Deploy OTMS application
+  hosts: localhost
+  gather_facts: false
+  become: true
+  tasks:
+    # - name: Ensure Docker is installed
+    #   apt:
+    #     name: docker.io
+    #     state: present
+    #   become: true
+
+    # - name: Ensure Docker Compose is installed
+    #   get_url:
+    #     url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`
+    #     dest: /usr/local/bin/docker-compose
+    #     mode: '0755'
+    #   become: true
+    #   when: ansible_distribution == "Ubuntu"
+
+    - name: Pull frontend from Docker Hub
+      shell: docker pull subhodip703/otms-all-frontend:latest
+
+    - name: Pull backend from Docker Hub
+      shell: docker pull subhodip703/otms-all-backend:latest
+
+    - name: Create /opt/otms directory if it doesn't exist
+      file:
+        path: /opt/otms
+        state: directory
+
+    - name: Copy config files to host
+      copy:
+        src: /var/lib/jenkins/workspace/OTMS/k8s-deploy
+        dest: /opt/otms/
+
+    # Ensure kubectl is installed
+    # And also cluster is connected
+
+    - name: Add database config to cluster
+      shell: kubectl apply -f db-config.yml
+      args:
+        chdir: /opt/otms
+
+    - name: Deploying Database service
+      shell: kubectl apply -f db-deployment-service.yml
+      args:
+        chdir: /opt/otms
