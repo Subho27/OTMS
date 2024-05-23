@@ -1,7 +1,2 @@
-all:
-  hosts:
-    localhost:
-      ansible_connection: local
-      ansible_become: yes
-      ansible_become_user: root
-      ansible_become_pass: ubuntu12
+127.0.0.1 ansible_connection=local ansible_user=subho ansible_ssh_pass=ubuntu12
+ansible_ssh_common_args = '-o StrictHostKeyChecking=no'
