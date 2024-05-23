@@ -25,12 +25,10 @@
 
     - name: Deploying Database ConfigMap File
       kubernetes.core.k8s:
-        kubeconfig: /etc/ansible/kube.config
         state: present
         src: ../k8s-deploy/db-config.yml
     
     - name: Deploying Database
       kubernetes.core.k8s:
-        kubeconfig: /etc/ansible/kube.config
         state: present
         src: ../k8s-deploy/db-deployment-service.yml
