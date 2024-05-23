@@ -66,8 +66,8 @@ pipeline {
         stage('Deployment Configurations Setup') {
             steps {
                 dir('k8s-deploy') {
-                    sh 'kubectl apply -f db-config.yml'
-                    sh 'kubectl apply -f backend-config.yml'
+                    sh 'kubectl apply -f db-config.yml --validate=false'
+                    sh 'kubectl apply -f backend-config.yml --validate=false'
                 }
             }
         }
