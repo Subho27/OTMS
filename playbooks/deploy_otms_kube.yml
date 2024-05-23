@@ -17,6 +17,9 @@
     #   become: true
     #   when: ansible_distribution == "Ubuntu"
 
+    - name: Apply db config
+      shell: kubectl apply -f ../k8s-deploy/db-config.yml
+      
     - name: Pull frontend from Docker Hub
       shell: docker pull subhodip703/ui-otms:0.0.1
 
