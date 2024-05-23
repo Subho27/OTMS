@@ -1,8 +1,7 @@
 ---
 - name: Deploy OTMS application
   hosts: localhost
-  gather_facts: false
-  become: true
+  gather_facts: False
   tasks:
     # - name: Ensure Docker is installed
     #   apt:
