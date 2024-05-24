@@ -36,10 +36,10 @@
       kubernetes.core.k8s:
         kubeconfig: ~/.kube/config
         state: present
-        definition: "{{ lookup('template', 'k8s-deploy/db-config.yml.j2') }}"
+        definition: "{{ lookup('template', '../k8s-deploy/db-config.yml.j2') }}"
     
     - name: Deploying Database
       kubernetes.core.k8s:
         kubeconfig: ~/.kube/config
         state: present
-        definition: "{{ lookup('template', 'k8s-deploy/db-deployment-service.yml.j2') }}"
+        definition: "{{ lookup('template', '../k8s-deploy/db-deployment-service.yml.j2') }}"
