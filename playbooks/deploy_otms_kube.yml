@@ -118,6 +118,6 @@
     #     msg: "Frontend service is not ready after waiting for {{ retries * delay }} seconds."
     #   when: frontend_service.resources[0].spec.ports[0].nodePort is not defined
 
-    - name: Print Frontend Service URL
-      debug:
-        msg: "Frontend Service is available at http://{{ hostvars['localhost']['ansible_default_ipv4']['address'] }}:{{ frontend_service.resources[0].spec.ports[0].nodePort }}"
+    # - name: Print Frontend Service URL
+    #   debug:
+    #     msg: "Frontend Service is available at http://{{ hostvars['localhost']['ansible_default_ipv4']['address'] }}:{{ frontend_service.resources[0].spec.ports[0].nodePort }}"
