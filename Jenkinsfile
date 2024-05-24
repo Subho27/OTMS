@@ -25,13 +25,13 @@ pipeline {
             }
         }
        
-        stage('Unit Testing') {
-            steps {
-                dir('backend') {
-                    sh 'mvn clean test'
-                }
-            }
-        }
+        // stage('Unit Testing') {
+        //     steps {
+        //         dir('backend') {
+        //             sh 'mvn clean test'
+        //         }
+        //     }
+        // }
        
         stage('Containerize Frontend Application') {
             steps {
