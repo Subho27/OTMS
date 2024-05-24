@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: otms-db-config
+  namespace: default
 data:
   DATABASE_URL: "jdbc:mysql://otms-db-service:3306/exam-portal"
   MYSQL_ROOT_PASSWORD: "subho123"
