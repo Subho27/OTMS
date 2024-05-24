@@ -46,15 +46,20 @@
         label_selectors:
           - app=otms-db
       register: db_pods
-      until: >
-        db_pods.resources | selectattr('status.containerStatuses', 'defined') |
-        selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length > 0
+      until: db_pods.resources | selectattr('status.containerStatuses', 'defined') |
+            selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length > 0
       retries: 10
       delay: 10
       failed_when: db_pods.resources | selectattr('status.containerStatuses', 'defined') |
-        selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
-      msg: "Database service is not ready after waiting for {{ retries * delay }} seconds."
+                  selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
+      ignore_errors: yes
     
+    - name: Fail if Database Pods are not Running
+      fail:
+        msg: "Database service is not ready after waiting for {{ retries * delay }} seconds."
+      when: db_pods.resources | selectattr('status.containerStatuses', 'defined') |
+            selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
+
     - name: Backend Configurations Setup
       kubernetes.core.k8s:
         kubeconfig: /etc/ansible/kube/config
@@ -75,14 +80,19 @@
         label_selectors:
           - app=backend
       register: backend_pods
-      until: >
-        backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
-        selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length > 0
+      until: backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
+            selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length > 0
       retries: 10
       delay: 10
       failed_when: backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
-        selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
-      msg: "Backend service is not ready after waiting for {{ retries * delay }} seconds."
+                  selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
+      ignore_errors: yes
+
+    - name: Fail if Backend Pods are not Running
+      fail:
+        msg: "Backend service is not ready after waiting for {{ retries * delay }} seconds."
+      when: backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
+            selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
     
     - name: Frontend Deployment
       kubernetes.core.k8s:
@@ -101,7 +111,12 @@
       retries: 10
       delay: 10
       failed_when: frontend_service.resources[0].spec.ports[0].nodePort is not defined
-      msg: "Frontend service is not ready after waiting for {{ retries * delay }} seconds."
+      ignore_errors: yes
+    
+    - name: Fail if Frontend Service is not Running
+      fail:
+        msg: "Frontend service is not ready after waiting for {{ retries * delay }} seconds."
+      when: frontend_service.resources[0].spec.ports[0].nodePort is not defined
 
     - name: Print Frontend Service URL
       debug:
