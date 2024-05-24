@@ -17,8 +17,8 @@
     #   become: true
     #   when: ansible_distribution == "Ubuntu"
 
-    - name: Apply db config
-      shell: kubectl apply -f ../k8s-deploy/db-config.yml
+    # - name: Apply db config
+    #   shell: kubectl apply -f ../k8s-deploy/db-config.yml
       
     - name: Pull frontend from Docker Hub
       shell: docker pull subhodip703/ui-otms:0.0.1
@@ -26,20 +26,20 @@
     - name: Pull backend from Docker Hub
       shell: docker pull subhodip703/api-otms:0.0.1
 
-    - name: Install kubernetes library
-      pip:
-        name: kubernetes
-        state: present
-        executable: pip3
+    # - name: Install kubernetes library
+    #   pip:
+    #     name: kubernetes
+    #     state: present
+    #     executable: pip3
 
-    - name: Deploying Database ConfigMap File
+    - name: Apply Persistent Volume and Claim
       kubernetes.core.k8s:
-        kubeconfig: /etc/ansible/kube.config
+        kubeconfig: ~/.kube/config
         state: present
-        src: ../k8s-deploy/db-config.yml
+        definition: "{{ lookup('template', 'k8s-deploy/db-config.yml.j2') }}"
     
     - name: Deploying Database
       kubernetes.core.k8s:
-        kubeconfig: /etc/ansible/kube.config
+        kubeconfig: ~/.kube/config
         state: present
-        src: ../k8s-deploy/db-deployment-service.yml
+        definition: "{{ lookup('template', 'k8s-deploy/db-deployment-service.yml.j2') }}"
