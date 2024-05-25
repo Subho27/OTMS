@@ -63,3 +63,21 @@
         kubeconfig: /etc/ansible/kube/config
         state: present
         definition: "{{ lookup('template', '../k8s-deploy/frontend-scaling.yml.j2') }}"
+
+    # - name: Elastic Search
+    #   kubernetes.core.k8s:
+    #     kubeconfig: /etc/ansible/kube/config
+    #     state: present
+    #     definition: "{{ lookup('template', '../k8s-deploy/elastic.yml.j2') }}"
+
+    # - name: Kibana
+    #   kubernetes.core.k8s:
+    #     kubeconfig: /etc/ansible/kube/config
+    #     state: present
+    #     definition: "{{ lookup('template', '../k8s-deploy/kibana.yml.j2') }}"
+
+    # - name: Logstash
+    #   kubernetes.core.k8s:
+    #     kubeconfig: /etc/ansible/kube/config
+    #     state: present
+    #     definition: "{{ lookup('template', '../k8s-deploy/logstash.yml.j2') }}"
