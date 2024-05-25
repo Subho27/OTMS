@@ -22,36 +22,60 @@ public class QuizController {
 
     @PostMapping("/")
     public ResponseEntity<?> addQuiz(@RequestBody Quiz quiz) {
-        return ResponseEntity.ok(quizService.addQuiz(quiz));
+        try {
+            return ResponseEntity.ok(quizService.addQuiz(quiz));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
+        }
     }
 
     @GetMapping("/")
     public ResponseEntity<?> getQuizzes() {
-        return ResponseEntity.ok(quizService.getQuizzes());
+        try {
+            return ResponseEntity.ok(quizService.getQuizzes());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
+        }
     }
 
     @GetMapping("/{quizId}")
     public ResponseEntity<?> getQuiz(@PathVariable Long quizId) {
-        return ResponseEntity.ok(quizService.getQuiz(quizId));
+        try {
+            return ResponseEntity.ok(quizService.getQuiz(quizId));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
+        }
     }
 
     @GetMapping(value = "/", params = "catId")
     public ResponseEntity<?> getQuizByCategory(@RequestParam Long catId) {
-        Category category = categoryService.getCategory(catId);
-        return ResponseEntity.ok(quizService.getQuizByCategory(category));
+        try {
+            Category category = categoryService.getCategory(catId);
+            return ResponseEntity.ok(quizService.getQuizByCategory(category));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
+        }
     }
 
     @PutMapping("/{quizId}")
     public ResponseEntity<?> updateQuiz(@PathVariable Long quizId, @RequestBody Quiz quiz) {
-        if (quizService.getQuiz(quizId) != null) {
-            return ResponseEntity.ok(quizService.updateQuiz(quiz));
+        try {
+            if (quizService.getQuiz(quizId) != null) {
+                return ResponseEntity.ok(quizService.updateQuiz(quiz));
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quiz with id : " + String.valueOf(quizId) + ", doesn't exists");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Quiz with id : " + String.valueOf(quizId) + ", doesn't exists");
     }
 
     @DeleteMapping("/{quizId}")
     public ResponseEntity<?> deleteQuiz(@PathVariable Long quizId) {
-        quizService.deleteQuiz(quizId);
-        return ResponseEntity.ok(true);
+        try {
+            quizService.deleteQuiz(quizId);
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
+        }
     }
 }

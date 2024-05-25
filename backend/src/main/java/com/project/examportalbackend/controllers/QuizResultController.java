@@ -36,57 +36,69 @@ public class QuizResultController {
 
     @PostMapping(value = "/submit", params = {"userId", "quizId"})
     public ResponseEntity<?> submitQuiz(@RequestParam Long userId, @RequestParam Long quizId, @RequestBody HashMap<String,String> answers) {
-        Quiz quiz = quizService.getQuiz(quizId);
-        int totalQuestions = quiz.getQuestions().size();
-        int totalMarks = quiz.getQuestions().size() * 10;
-        float marksPerQuestion = 5;
+        try {
+            Quiz quiz = quizService.getQuiz(quizId);
+            int totalQuestions = quiz.getQuestions().size();
+            int totalMarks = quiz.getQuestions().size() * 10;
+            float marksPerQuestion = 5;
 
-        Question question = null;
-        int numCorrectAnswers = 0;
-        for(Map.Entry<String, String> m : answers.entrySet()){
-            Long quesId = Long.valueOf(m.getKey());
-            question = questionService.getQuestion(Long.valueOf(m.getKey()));
-            if(question != null) {
-                if(question.getAnswer().equals(m.getValue())){
-                    numCorrectAnswers++;
+            Question question = null;
+            int numCorrectAnswers = 0;
+            for(Map.Entry<String, String> m : answers.entrySet()){
+                Long quesId = Long.valueOf(m.getKey());
+                question = questionService.getQuestion(Long.valueOf(m.getKey()));
+                if(question != null) {
+                    if(question.getAnswer().equals(m.getValue())){
+                        numCorrectAnswers++;
+                    }
                 }
             }
+            float totalObtainedMarks = numCorrectAnswers*marksPerQuestion;
+
+            QuizResult quizResult = new QuizResult();
+            quizResult.setUserId(userId);
+            quizResult.setQuiz(quizService.getQuiz(quizId));
+            quizResult.setTotalObtainedMarks(totalObtainedMarks);
+            final ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+            quizResult.setAttemptDatetime(now.toLocalDate().toString() + " " + now.toLocalTime().toString().substring(0,8));
+
+            quizResultService.addQuizResult(quizResult);
+            return ResponseEntity.ok(quizResult);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
         }
-        float totalObtainedMarks = numCorrectAnswers*marksPerQuestion;
-
-        QuizResult quizResult = new QuizResult();
-        quizResult.setUserId(userId);
-        quizResult.setQuiz(quizService.getQuiz(quizId));
-        quizResult.setTotalObtainedMarks(totalObtainedMarks);
-        final ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
-        quizResult.setAttemptDatetime(now.toLocalDate().toString() + " " + now.toLocalTime().toString().substring(0,8));
-
-        quizResultService.addQuizResult(quizResult);
-        return ResponseEntity.ok(quizResult);
     }
 
     @GetMapping(value = "/", params = "userId")
     public ResponseEntity<?> getQuizResults(@RequestParam Long userId){
-        List<QuizResult> quizResultsList =  quizResultService.getQuizResultsByUser(userId);
-        Collections.reverse(quizResultsList);
-        return ResponseEntity.ok(quizResultsList);
+        try {
+            List<QuizResult> quizResultsList =  quizResultService.getQuizResultsByUser(userId);
+            Collections.reverse(quizResultsList);
+            return ResponseEntity.ok(quizResultsList);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
+        }
     }
 
     @GetMapping(value = "/all")
     public ResponseEntity<?> getQuizResults(){
-        List<QuizResult> quizResultsList =  quizResultService.getQuizResults();
-        List<QuizResultDTO> students = new ArrayList<>();
-        for(QuizResult quizResults : quizResultsList) {
-            User user = userRepository.findUserByUserId(quizResults.getUserId());
-            QuizResultDTO student = new QuizResultDTO();
-            student.setName(user.getFirstName() + " " + user.getLastName());
-            student.setAttemptDatetime(quizResults.getAttemptDatetime());
-            student.setQuiz(quizResults.getQuiz());
-            student.setQuizResId(quizResults.getQuizResId());
-            student.setTotalObtainedMarks(quizResults.getTotalObtainedMarks());
-            students.add(student);
+        try {
+            List<QuizResult> quizResultsList =  quizResultService.getQuizResults();
+            List<QuizResultDTO> students = new ArrayList<>();
+            for(QuizResult quizResults : quizResultsList) {
+                User user = userRepository.findUserByUserId(quizResults.getUserId());
+                QuizResultDTO student = new QuizResultDTO();
+                student.setName(user.getFirstName() + " " + user.getLastName());
+                student.setAttemptDatetime(quizResults.getAttemptDatetime());
+                student.setQuiz(quizResults.getQuiz());
+                student.setQuizResId(quizResults.getQuizResId());
+                student.setTotalObtainedMarks(quizResults.getTotalObtainedMarks());
+                students.add(student);
+            }
+            Collections.reverse(students);
+            return ResponseEntity.ok(students);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("There is an Exception");
         }
-        Collections.reverse(students);
-        return ResponseEntity.ok(students);
     }
 }
