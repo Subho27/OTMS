@@ -57,3 +57,9 @@
         kubeconfig: /etc/ansible/kube/config
         state: present
         definition: "{{ lookup('template', '../k8s-deploy/frontend-deployment-service.yml.j2') }}"
+
+    - name: Frontend Scaling
+      kubernetes.core.k8s:
+        kubeconfig: /etc/ansible/kube/config
+        state: present
+        definition: "{{ lookup('template', '../k8s-deploy/frontend-scaling.yml.j2') }}"
