@@ -5,10 +5,10 @@
   tasks:
       
     - name: Pull frontend from Docker Hub
-      shell: docker pull subhodip703/ui-otms:0.0.1
+      shell: docker pull rishavchandel/ui-otms:0.0.1
 
     - name: Pull backend from Docker Hub
-      shell: docker pull subhodip703/api-otms:0.0.1
+      shell: docker pull rishavchandel/api-otms:0.0.1
 
     - name: Install kubernetes Python library on remote hosts
       pip:
