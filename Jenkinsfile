@@ -8,14 +8,14 @@ pipeline {
             }
         }
 
-        stage('Build Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'CI=false npm run build'
-                }
-            }
-        }
+        // stage('Build Frontend') {
+        //     steps {
+        //         dir('frontend') {
+        //             sh 'npm install'
+        //             sh 'CI=false npm run build'
+        //         }
+        //     }
+        // }
         
         stage('Build Backend') {
             steps {
@@ -33,15 +33,15 @@ pipeline {
             }
         }
        
-        stage('Containerize Frontend Application') {
-            steps {
-                dir('frontend') {
-                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'docker build -t $DOCKER_USERNAME/ui-otms:0.0.1 . --no-cache'
-                    }
-                }
-            }
-        }
+        // stage('Containerize Frontend Application') {
+        //     steps {
+        //         dir('frontend') {
+        //             withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+        //                 sh 'docker build -t $DOCKER_USERNAME/ui-otms:0.0.1 . --no-cache'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Containerize Backend Application') {
             steps {
