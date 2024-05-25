@@ -3,22 +3,6 @@
   hosts: localhost
   gather_facts: False
   tasks:
-    # - name: Ensure Docker is installed
-    #   apt:
-    #     name: docker.io
-    #     state: present
-    #   become: true
-
-    # - name: Ensure Docker Compose is installed
-    #   get_url:
-    #     url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m`
-    #     dest: /usr/local/bin/docker-compose
-    #     mode: '0755'
-    #   become: true
-    #   when: ansible_distribution == "Ubuntu"
-
-    # - name: Apply db config
-    #   shell: kubectl apply -f ../k8s-deploy/db-config.yml
       
     - name: Pull frontend from Docker Hub
       shell: docker pull subhodip703/ui-otms:0.0.1
@@ -32,6 +16,17 @@
         state: present
         executable: pip3
 
+    - name: Persistent Volume setup
+      kubernetes.core.k8s:
+        kubeconfig: /etc/ansible/kube/config
+        state: present
+        definition: "{{ lookup('template', '../k8s-deploy/otms-db-pv.yml.j2') }}"
+
+    - name: Persistent Volume Claim setup
+      kubernetes.core.k8s:
+        kubeconfig: /etc/ansible/kube/config
+        state: present
+        definition: "{{ lookup('template', '../k8s-deploy/otms-db-pvc.yml.j2') }}"
 
     - name: Database Configurations Setup
       kubernetes.core.k8s:
@@ -45,28 +40,6 @@
         state: present
         definition: "{{ lookup('template', '../k8s-deploy/db-deployment-service.yml.j2') }}"
 
-    # - name: Wait for Database Pods to be Running
-    #   k8s_info:
-    #     api_version: v1
-    #     kind: Pod
-    #     namespace: default
-    #     label_selectors:
-    #       - app=otms-db
-    #   register: db_pods
-    #   until: db_pods.resources | selectattr('status.containerStatuses', 'defined') |
-    #         selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length > 0
-    #   retries: 10
-    #   delay: 10
-    #   failed_when: db_pods.resources | selectattr('status.containerStatuses', 'defined') |
-    #               selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
-    #   ignore_errors: yes
-    
-    # - name: Fail if Database Pods are not Running
-    #   fail:
-    #     msg: "Database service is not ready after waiting for {{ retries * delay }} seconds."
-    #   when: db_pods.resources | selectattr('status.containerStatuses', 'defined') |
-    #         selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
-
     - name: Backend Configurations Setup
       kubernetes.core.k8s:
         kubeconfig: /etc/ansible/kube/config
@@ -78,53 +51,9 @@
         kubeconfig: /etc/ansible/kube/config
         state: present
         definition: "{{ lookup('template', '../k8s-deploy/backend-deployment-service.yml.j2') }}"
-
-    # - name: Wait for Backend Pods to be Running
-    #   k8s_info:
-    #     api_version: v1
-    #     kind: Pod
-    #     namespace: default
-    #     label_selectors:
-    #       - app=backend
-    #   register: backend_pods
-    #   until: backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
-    #         selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length > 0
-    #   retries: 10
-    #   delay: 10
-    #   failed_when: backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
-    #               selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
-    #   ignore_errors: yes
-
-    # - name: Fail if Backend Pods are not Running
-    #   fail:
-    #     msg: "Backend service is not ready after waiting for {{ retries * delay }} seconds."
-    #   when: backend_pods.resources | selectattr('status.containerStatuses', 'defined') |
-    #         selectattr('status.containerStatuses[0].ready', 'equalto', true) | list | length == 0
     
     - name: Frontend Deployment
       kubernetes.core.k8s:
         kubeconfig: /etc/ansible/kube/config
         state: present
         definition: "{{ lookup('template', '../k8s-deploy/frontend-deployment-service.yml.j2') }}"
-
-    # - name: Wait for Frontend Service to be Running
-    #   k8s_info:
-    #     api_version: v1
-    #     kind: Service
-    #     namespace: default
-    #     name: otms-frontend-service
-    #   register: frontend_service
-    #   until: frontend_service.resources[0].spec.ports[0].nodePort is defined
-    #   retries: 10
-    #   delay: 10
-    #   failed_when: frontend_service.resources[0].spec.ports[0].nodePort is not defined
-    #   ignore_errors: yes
-    
-    # - name: Fail if Frontend Service is not Running
-    #   fail:
-    #     msg: "Frontend service is not ready after waiting for {{ retries * delay }} seconds."
-    #   when: frontend_service.resources[0].spec.ports[0].nodePort is not defined
-
-    # - name: Print Frontend Service URL
-    #   debug:
-    #     msg: "Frontend Service is available at http://{{ hostvars['localhost']['ansible_default_ipv4']['address'] }}:{{ frontend_service.resources[0].spec.ports[0].nodePort }}"

@@ -18,6 +18,9 @@ spec:
       containers:
         - name: otms-db
           image: mysql:8.0.34
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: otms-vol
           ports:
             - containerPort: 3306
           env:
@@ -31,6 +34,10 @@ spec:
                 configMapKeyRef:
                   name: otms-db-config
                   key: MYSQL_DATABASE
+      volumes:
+        - name: otms-vol
+          persistentVolumeClaim:
+            claimName: otms-db-pvc
 
 ---
 
