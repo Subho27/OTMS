@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: logstash
+  labels:
+    app: logstash
+spec:
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: docker.elastic.co/logstash/logstash:7.17.6
+        ports:
+        - containerPort: 5044
+        volumeMounts:
+        - name: log-config
+          mountPath: /usr/share/logstash/pipeline
+        - name: varlog
+          mountPath: /var/log
+        env:
+        - name: ELASTICSEARCH_HOSTS
+          value: "http://elasticsearch:9200"
+      volumes:
+      - name: log-config
+        configMap:
+          name: logstash-config
+      - name: varlog
+        hostPath:
+          path: /var/log
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: logstash-config
+data:
+  logstash.conf: |
+    input {
+      kube-apiserver {
+        interval => 10
+        type => "kubernetes"
+      }
+    }
+
+    output {
+      elasticsearch {
+        hosts => ["http://elasticsearch:9200"]
+        index => "kubernetes-logs-%{+YYYY.MM.dd}"
+      }
+    }
