@@ -5,7 +5,7 @@ metadata:
   namespace: default
 data:
   DATABASE_URL: "jdbc:mysql://otms-db-service:3306/exam-portal"
-  MYSQL_ROOT_PASSWORD: "subho123"
+  MYSQL_ROOT_PASSWORD: '${{ secrets.MYSQLPASSWORD }}'
   MYSQL_USER: "root"
   MYSQL_DATABASE: "exam-portal"
   HIBERNATE_DIALECT: "org.hibernate.dialect.MySQL8Dialect"
