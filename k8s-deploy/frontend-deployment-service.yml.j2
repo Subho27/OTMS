@@ -36,6 +36,13 @@ spec:
                 configMapKeyRef:
                   name: otms-backend-config
                   key: BACKEND_URL
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "200Mi"
+            limits:
+              cpu: "500m"
+              memory: "500Mi"
 
 ---
 
